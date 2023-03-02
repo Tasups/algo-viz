@@ -5,11 +5,16 @@ import {mergeSortAnimations} from './algorithms/mergeAlgo';
 import './App.css';
 
 
+let windowWidth = window.innerWidth - 200
+let windowHeight = window.innerHeight - 300
+let recommendedArrayLength = Math.floor(windowWidth / 8)
+
+
 function App() {
   const [array, setArray] = useState([])
-  const [numValue, setNumValue] = useState(50)
+  const [numValue, setNumValue] = useState(recommendedArrayLength)
   const [speedValue, setSpeedValue] = useState("")
-  const [speed, setSpeed] = useState(0)
+  const [speed, setSpeed] = useState(50)
   
   const mergeSort = () => {
     const animations = mergeSortAnimations(array);
@@ -36,9 +41,6 @@ function App() {
   }
   
   let dataArray = []
-  let windowWidth = window.innerWidth - 200
-  let windowHeight = window.innerHeight - 300
-  let recommendedArrayLength = Math.floor(windowWidth / 8)
 
   const changeData = (num) => {
     for(let i = 0; i < num; i++){
@@ -46,11 +48,7 @@ function App() {
     }
     setArray(dataArray)
   }
-  
-  const handleSpeedChange = (e) => {
-    setSpeedValue(e.target.value)
-  }
-  
+
   const handleArrSubmit = () => {
     changeData(numValue)
   }
@@ -66,21 +64,25 @@ function App() {
   
   return (
     <div className="App">
-      <h1>Algorithm Visualizer</h1>
-      <h4>Your viewport width is: {windowWidth}</h4>
-      <h4>Recommended Array Length: {recommendedArrayLength}</h4>
-      <h5>Animation Speed: {speed} milliseconds</h5>
+      <div className="header">
+      <h1 className="title">Algorithm Visualizer</h1>
 
-      <div className="number__form">
+      <div className="algo__controls">
       
-      <Form>
-        <div>
+      <div className="recommendations">
+        <h6>Your viewport width is: {windowWidth}</h6>
+        <h6>Recommended Array Length: {recommendedArrayLength}</h6>
+        <h6>Animation Speed: {speed} milliseconds</h6>
+      </div>
+      
+      <Form className="number__form" >
+        <div className="number__form-container-rows">
           <Form.Label>Number of Rows</Form.Label>
           <Form.Group className="number__form-rows">
             <Form.Control
               name="rowNum"
               value={numValue}
-              style={{width: "3rem", padding: "0", marginRight: "0.5rem"}}
+              style={{width: "3rem", padding: "0.05rem", marginRight: "0.5rem"}}
               placeholder={recommendedArrayLength}
               onChange={(e) => setNumValue(e.target.value)}
               label='Number input' 
@@ -92,33 +94,40 @@ function App() {
               min={2} 
               max={recommendedArrayLength}
               onChange={(e) => setNumValue(e.target.value)}
-              tooltipplacement="top"
-              tooltip="on"
             />
           </Form.Group>
-          <Button size="sm" onClick={handleArrSubmit}>Submit</Button>
+          <Button size="sm" variant="outline-primary" onClick={handleArrSubmit}>Set Rows</Button>
         </div>
         
-        <div>
-          <Form.Group>
+        <div className="number__form-container-speed">
+          <Form.Label>Execution Delay in ms</Form.Label>
+          <Form.Group className="number__form-speed">
             <Form.Control
               name="speed"
               value={speedValue}
-              style={{width: "5rem"}}
+              style={{width: "3rem", padding: "0", marginRight: "0.5rem"}}
               placeholder={speed}
-              onChange={handleSpeedChange}
+              onChange={(e) => setSpeedValue(e.target.value)}
               label='Number input' 
               id='typeNumber' 
               type='number'
             />
+            <Form.Range 
+              value={speedValue} 
+              min={1} 
+              max={100}
+              onChange={(e) => setSpeedValue(e.target.value)}
+            />
           </Form.Group>
-          <Button onClick={handleSpeedSubmit}>Set Speed</Button>
+          <Button size="sm" variant="outline-primary" onClick={handleSpeedSubmit}>Set Speed</Button>
         </div>
       </Form>
-     
+      
+      <Button size="sm" variant="outline-danger"className="clear__button" onClick={handleClear}>Clear</Button>
+      <Button size="sm" variant="outline-secondary" className="algo__options" onClick={() => mergeSort()}>MergeSort</Button>
+      
       </div>
-       <Button onClick={handleClear}>Clear</Button>
-      <Button onClick={() => mergeSort()}>MergeSort</Button>
+      </div>
       
       <div className="array__container" style={{width: `${windowWidth}px`}}>
         {
@@ -131,7 +140,6 @@ function App() {
           ))
         }
       </div>
-      
     </div>
   );
 }

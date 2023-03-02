@@ -1,17 +1,61 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   text-align: center;
 }
 
+.header {
+  background-color: #F5F6F4;
+  margin: 0;
+  border-bottom: 1px solid black;
+}
+
+.title {
+  padding: 1rem 0 0 0;
+}
+
+.algo__controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recommendations {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  margin-right: 2rem;
+}
+
 .number__form {
   display: flex;
-  flex-direction: row;
   margin: 1rem;
-  width: 100%;
+}
+
+.number__form-container-rows {
+  margin-right: 1rem;
 }
 
 .number__form-rows {
   display: flex;
   margin: 0.25rem;
+}
+
+.number__form-speed {
+  display: flex;
+  margin: 0.25rem;
+}
+
+.algo__options {
+  max-height: 2.5rem;
+  margin-left: 1rem;
+}
+
+.clear__button {
+  max-height: 2.5rem;
 }
 
 .array__container {
