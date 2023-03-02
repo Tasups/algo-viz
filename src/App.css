@@ -4,7 +4,14 @@
 
 .number__form {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  margin: 1rem;
+  width: 100%;
+}
+
+.number__form-rows {
+  display: flex;
+  margin: 0.25rem;
 }
 
 .array__container {
