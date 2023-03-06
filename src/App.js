@@ -2,12 +2,16 @@ import { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 
 import {mergeSortAnimations} from './algorithms/mergeAlgo';
+import {bubbleSortAnimations} from './algorithms/bubbleSort'
 import './App.css';
+
+// NOTE https://www.geeksforgeeks.org/bubble-sort-visualization-using-javascript/
 
 
 let windowWidth = window.innerWidth - 200
-let windowHeight = window.innerHeight - 300
+let windowHeight = window.innerHeight - 200
 let recommendedArrayLength = Math.floor(windowWidth / 8)
+let container = document.getElementById("container")
 
 
 function App() {
@@ -16,6 +20,9 @@ function App() {
   const [speedValue, setSpeedValue] = useState("")
   const [speed, setSpeed] = useState(50)
   
+  let dataArray = []
+  
+  // merge
   const mergeSort = () => {
     const animations = mergeSortAnimations(array);
     for (let i = 0; i < animations.length; i++) {
@@ -23,6 +30,7 @@ function App() {
       const isColorChange = i % 3 !== 2;
       if (isColorChange) {
         const [barOneIdx, barTwoIdx] = animations[i];
+        console.log(barOneIdx, barTwoIdx)
         const barOneStyle = arrayBars[barOneIdx].style;
         const barTwoStyle = arrayBars[barTwoIdx].style;
         const color = i % 3 === 0 ? "red" : "turquoise";
@@ -40,7 +48,55 @@ function App() {
     }
   }
   
-  let dataArray = []
+  // heap
+  
+  
+  // quick
+  
+  
+  // bubble
+  const bubbleSort = () => {
+    const animations = bubbleSortAnimations(array);
+    console.log("Animations Length: " + animations.length)
+    const arrayBars = document.getElementsByClassName('array__columns');
+    
+    const bubbleSwap = (el1, el2) => {
+    return new Promise((resolve) => {
+      
+        // For exchanging styles of two blocks
+        var temp = el1.style.transform;
+        el1.style.transform = el2.style.transform;
+        el2.style.transform = temp;
+        
+        window.requestAnimationFrame(function() {
+          
+            // For waiting for .25 sec
+            setTimeout(() => {
+                container.insertBefore(el2, el1);
+                resolve();
+            }, speed);
+        });
+    });
+    }
+    
+    for (let i = 0; i < animations.length; i++) {
+      if(animations[i + 1]){
+        if(animations[i] === "swap"){
+          arrayBars[i].style.backgroundColor = "green"
+          arrayBars[i + 1].style.backgroundColor = "green"
+          bubbleSwap(arrayBars[i], arrayBars[i + 1])
+          arrayBars[i].style.backgroundColor = "blue"
+        } else if(animations[i] === "skip"){
+          arrayBars[i].style.backgroundColor = "blue"
+          arrayBars[i + 1].style.backgroundColor = "blue"
+          arrayBars[i].style.backgroundColor = "blue"
+        } else {
+          console.log("end of array")
+        }
+      }
+      console.log("App: " + i)
+    }
+  }
 
   const changeData = (num) => {
     for(let i = 0; i < num; i++){
@@ -123,8 +179,30 @@ function App() {
         </div>
       </Form>
       
-      <Button size="sm" variant="outline-danger"className="clear__button" onClick={handleClear}>Clear</Button>
-      <Button size="sm" variant="outline-secondary" className="algo__options" onClick={() => mergeSort()}>MergeSort</Button>
+      <Button 
+        size="sm" 
+        variant="outline-danger"
+        className="clear__button" 
+        onClick={handleClear}
+      >
+        Clear
+      </Button>
+      <Button 
+        size="sm" 
+        variant="outline-secondary" 
+        className="algo__options" 
+        onClick={() => mergeSort()}
+      >
+        MergeSort
+      </Button>
+      <Button 
+        size="sm" 
+        variant="outline-secondary" 
+        className="algo__options" 
+        onClick={() => bubbleSort()}
+      >
+        BubbleSort
+      </Button>
       
       </div>
       </div>
@@ -133,6 +211,7 @@ function App() {
         {
           array?.map((el) => (
             <div 
+              id="container"
               className="array__columns"
               key={Math.random() * 50000} 
               style={{height: `${el}px`}}>

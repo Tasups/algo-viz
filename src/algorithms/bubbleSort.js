@@ -5,28 +5,28 @@ export function bubbleSortAnimations(array) {
   return animations;
 }
 
+
 function bubbleSort(mainArray, animations) {
   for(let i = 0; i < mainArray.length; i++) {
     for (let j = 0; j < mainArray.length; j++){
-      // lightup arr[j] and arr[j + 1] as we compare them green?
-      // FIRST iteration puts two indices in but no movement
-      animations.push("turn both green",mainArray[j], mainArray[j + 1])
-      if(mainArray[j] > mainArray[j + 1]) {
-        // SECOND interation would be movement but NO color change
-        animations.push("switch",mainArray[j], mainArray[j + 1])
+      // but j + 1 cannot be undefined
+      if (mainArray[j + 1] && mainArray[j] > mainArray[j + 1]){
+        // FIRST interation would be including lightup, swap, lightoff
         let temp = mainArray[j]
         mainArray[j] = mainArray[j + 1]
         mainArray[j + 1] = temp
-        // THIRD iteration
-        // stop lightup of the first index in the comparison and leave the second lit
-        animations.push("unlight first index",mainArray[j])
-      } else {
-        // FOURTH iteration
-        // toggle off the color if no swap is needed and we move on to the next index
-        animations.push("unlight first index",mainArray[j])
+        // animation of switch
+        animations.push("swap")
+      } 
+      if (mainArray[j + 1] && mainArray[j] < mainArray[j + 1]){
+        animations.push("skip")
+      }
+      if(mainArray[j + 1] === "undefined") {
+        break
       }
     }
   }
+  console.log(animations)
   return animations
 }
 
@@ -34,4 +34,4 @@ function bubbleSort(mainArray, animations) {
 // ways to animate the items
 
 // if not switch, be sure to keep the color first index in the next iteration 
-console.log(bubbleSortAnimations([1,2,5,4]))
+// console.log(bubbleSortAnimations([1,2,5,4]))
