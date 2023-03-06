@@ -2,7 +2,7 @@
 
 ## An algorithm visualization tool
 
-## Merge_Sort
+### Merge_Sort
 The Basic
 The "Merge Sort" algorithm is a solution to sorting a list of things, often numbers, by breaking down the list into individual pieces and then comparing those pieces to one another. It takes these pieces and merges them, thus earning its name, and returns back to us that sorted list.
 
