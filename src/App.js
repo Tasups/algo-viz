@@ -30,7 +30,7 @@ function App() {
       const isColorChange = i % 3 !== 2;
       if (isColorChange) {
         const [barOneIdx, barTwoIdx] = animations[i];
-        console.log(barOneIdx, barTwoIdx)
+        console.log("barOneIdx: " + barOneIdx, "barTwoIdx: " + barTwoIdx)
         const barOneStyle = arrayBars[barOneIdx].style;
         const barTwoStyle = arrayBars[barTwoIdx].style;
         const color = i % 3 === 0 ? "red" : "turquoise";
@@ -54,47 +54,71 @@ function App() {
   // quick
   
   
-  // bubble
-  const bubbleSort = () => {
+  // bubblesort Signal Interpreter
+  const bubbleSort = async () => {
+    // array is randomly generated
     const animations = bubbleSortAnimations(array);
     console.log("Animations Length: " + animations.length)
+    console.log("ANIMATIONS: " + animations)
     const arrayBars = document.getElementsByClassName('array__columns');
     
     const bubbleSwap = (el1, el2) => {
-    return new Promise((resolve) => {
-      
+      console.log("el1: " + el1, "el2: " + el2)
+      return new Promise((resolve) => {
         // For exchanging styles of two blocks
         var temp = el1.style.transform;
         el1.style.transform = el2.style.transform;
         el2.style.transform = temp;
         
         window.requestAnimationFrame(function() {
-          
             // For waiting for .25 sec
             setTimeout(() => {
                 container.insertBefore(el2, el1);
                 resolve();
-            }, speed);
+            }, 300);
         });
     });
     }
     
-    for (let i = 0; i < animations.length; i++) {
-      if(animations[i + 1]){
-        if(animations[i] === "swap"){
-          arrayBars[i].style.backgroundColor = "green"
-          arrayBars[i + 1].style.backgroundColor = "green"
-          bubbleSwap(arrayBars[i], arrayBars[i + 1])
-          arrayBars[i].style.backgroundColor = "blue"
-        } else if(animations[i] === "skip"){
-          arrayBars[i].style.backgroundColor = "blue"
-          arrayBars[i + 1].style.backgroundColor = "blue"
-          arrayBars[i].style.backgroundColor = "blue"
-        } else {
-          console.log("end of array")
-        }
-      }
-      console.log("App: " + i)
+    for (let i = 0; i < animations.length - 1; i++) {
+      const barOneStyle = arrayBars[i].style
+      const barTwoStyle = arrayBars[i + 1].style
+      console.log("barOneStyle :" + barOneStyle, "barTwoStyle: " + barTwoStyle)
+        // change the compared bars to lightgreen and then, after swapping them, 
+        // revert the color of the first one back
+        if(animations[i] === 1 && arrayBars[i] && arrayBars[i + 1]){
+          console.log("move up: " + arrayBars[i], "move back: " + arrayBars[i + 1])
+          // THERE'S SOMETHING BELOW THAT NEEDS TO BE FIXED AS WE KEEP GETTING ERRORS
+          setTimeout(() => {
+            barOneStyle.backgroundColor = "lightgreen"
+          }, 20)
+          
+          setTimeout(() => {
+            barTwoStyle.backgroundColor = "lightgreen"
+          }, 20)
+          
+          await bubbleSwap(arrayBars[i], arrayBars[i + 1])
+          
+          setTimeout(() => {
+            barOneStyle.backgroundColor = "blue"
+          }, 20)
+          // change the compared bars to lightgreen and then, after passing, 
+          // revert the color of the first one back
+        } else if (animations[i] === 0 && arrayBars[i] && arrayBars[i + 1]){
+          console.log("pass")
+          // THERE'S SOMETHING BELOW THAT NEEDS TO BE FIXED AS WE KEEP GETTING ERRORS
+          setTimeout(() => {
+             barOneStyle.backgroundColor = "lightgreen"
+          }, 20)
+          
+          setTimeout(() => {
+             barTwoStyle.backgroundColor = "lightgreen"
+          }, 20)
+          
+          setTimeout(() => {
+             barOneStyle.backgroundColor = "blue"
+          }, 20)
+        } 
     }
   }
 
@@ -207,11 +231,10 @@ function App() {
       </div>
       </div>
       
-      <div className="array__container" style={{width: `${windowWidth}px`}}>
+      <div id="container" className="array__container" style={{width: `${windowWidth}px`}}>
         {
           array?.map((el) => (
             <div 
-              id="container"
               className="array__columns"
               key={Math.random() * 50000} 
               style={{height: `${el}px`}}>
