@@ -13,8 +13,8 @@ let recommendedArrayLength = Math.floor(windowWidth / 8)
 function App() {
   const [array, setArray] = useState([])
   const [numValue, setNumValue] = useState(recommendedArrayLength)
-  const [speedValue, setSpeedValue] = useState("")
-  const [speed, setSpeed] = useState(50)
+  const [speedValue, setSpeedValue] = useState(10)
+  const [speed, setSpeed] = useState(10)
   
   const mergeSort = () => {
     const animations = mergeSortAnimations(array);
@@ -25,7 +25,7 @@ function App() {
         const [barOneIdx, barTwoIdx] = animations[i];
         const barOneStyle = arrayBars[barOneIdx].style;
         const barTwoStyle = arrayBars[barTwoIdx].style;
-        const color = i % 3 === 0 ? "red" : "turquoise";
+        const color = i % 3 === 0 ? "#FF0007" : "#30D5C8";
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
           barTwoStyle.backgroundColor = color;
@@ -115,7 +115,7 @@ function App() {
             <Form.Range 
               value={speedValue} 
               min={1} 
-              max={100}
+              max={50}
               onChange={(e) => setSpeedValue(e.target.value)}
             />
           </Form.Group>
